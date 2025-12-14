@@ -1,0 +1,70 @@
+# Claude Code
+.claude/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE / Editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+error_log
+debug.log
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.cache
+
+# Node (se usas build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Build artifacts
+/dist/
+/build/
+*.min.js.map
+*.min.css.map
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# WordPress uploads (as imaxes xeradas polos usuarios)
+# Descomenta se non queres incluír as imaxes de exemplo
+# assets/images/postal/
+# assets/images/instagram/
+# assets/images/historia/
+# assets/images/stickers/
+
+# Arquivos de backup
+*.sql
+*.zip
+*.tar.gz
+
+# PHPUnit
+.phpunit.result.cache
+phpunit.xml
+
+# Composer (se o usas)
+/vendor/
+composer.lock

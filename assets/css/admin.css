@@ -1,0 +1,489 @@
+/**
+ * Estilos para o panel de administración
+ *
+ * @package Postais_Nadal
+ */
+
+/* Seccións */
+.postais-nadal-admin,
+.postais-nadal-stats {
+	max-width: 1200px;
+}
+
+.postais-section {
+	background: #fff;
+	padding: 20px;
+	margin: 20px 0;
+	border: 1px solid #ccd0d4;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.postais-section h2 {
+	margin-top: 0;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 10px;
+}
+
+/* Notificacións */
+.postais-admin-notice {
+	margin: 20px 0;
+}
+
+.postais-admin-notice.notice {
+	padding: 12px;
+	border-left: 4px solid;
+	background: #fff;
+}
+
+.postais-admin-notice.notice-success {
+	border-left-color: #46b450;
+}
+
+.postais-admin-notice.notice-error {
+	border-left-color: #dc3232;
+}
+
+/* Grid de imaxes */
+.postais-image-uploader {
+	margin-bottom: 20px;
+}
+
+.postais-image-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 15px;
+	margin-top: 20px;
+}
+
+.postais-image-item {
+	position: relative;
+	border: 2px solid #ddd;
+	border-radius: 4px;
+	overflow: hidden;
+	background: #f5f5f5;
+	transition: all 0.3s;
+}
+
+.postais-image-item:hover {
+	border-color: #0073aa;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.postais-image-item img {
+	width: 100%;
+	height: 150px;
+	object-fit: cover;
+	display: block;
+}
+
+.postais-image-item .button {
+	width: 100%;
+	margin: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.postais-image-item .postais-delete-image {
+	background: #dc3232;
+	color: #fff;
+	border-color: #dc3232;
+}
+
+.postais-image-item .postais-delete-image:hover {
+	background: #c82222;
+	border-color: #c82222;
+}
+
+/* Badges de source (plugin vs upload) */
+.postais-image-badge,
+.postais-sticker-badge {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	padding: 2px 8px;
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	border-radius: 3px;
+	z-index: 2;
+}
+
+.postais-image-badge.badge-plugin,
+.postais-sticker-badge.badge-plugin {
+	background: #2271b1;
+	color: #fff;
+}
+
+.postais-image-badge.badge-upload,
+.postais-sticker-badge.badge-upload {
+	background: #dba617;
+	color: #fff;
+}
+
+.no-images,
+.no-stickers {
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 40px;
+	color: #666;
+	font-style: italic;
+}
+
+/* Grid de stickers */
+.postais-sticker-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+	gap: 15px;
+	margin-top: 20px;
+}
+
+.postais-sticker-item {
+	position: relative;
+	border: 2px solid #ddd;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #f5f5f5;
+	background-image:
+		linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+		linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+		linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+	background-size: 16px 16px;
+	background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+	transition: all 0.3s;
+	aspect-ratio: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+}
+
+.postais-sticker-item:hover {
+	border-color: #0073aa;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.postais-sticker-item img {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+.postais-sticker-item .postais-delete-sticker {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #dc3232;
+	color: #fff;
+	border: none;
+	border-radius: 0;
+	padding: 6px;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.postais-sticker-item:hover .postais-delete-sticker {
+	opacity: 1;
+}
+
+.postais-sticker-item .postais-delete-sticker:hover {
+	background: #c82222;
+}
+
+/* Pestanas de categorías */
+.postais-tabs {
+	display: flex;
+	gap: 0;
+	margin-bottom: 0;
+	border-bottom: 1px solid #ccd0d4;
+}
+
+.postais-tab {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 20px;
+	border: 1px solid transparent;
+	border-bottom: none;
+	background: #f5f5f5;
+	color: #555;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+	transition: all 0.2s;
+	margin-bottom: -1px;
+	border-radius: 4px 4px 0 0;
+}
+
+.postais-tab:hover {
+	background: #fff;
+	color: #0073aa;
+}
+
+.postais-tab.active {
+	background: #fff;
+	border-color: #ccd0d4;
+	color: #0073aa;
+}
+
+.postais-tab .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.postais-tab-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 22px;
+	height: 22px;
+	padding: 0 6px;
+	background: #0073aa;
+	color: #fff;
+	border-radius: 11px;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.postais-tab:not(.active) .postais-tab-count {
+	background: #999;
+}
+
+/* Contido das pestanas */
+.postais-tab-content {
+	display: none;
+	padding: 20px 0;
+}
+
+.postais-tab-content.active {
+	display: block;
+}
+
+.postais-tab-desc {
+	color: #666;
+	font-style: italic;
+	margin: 0 0 15px 0;
+}
+
+/* Textarea fontes */
+#fontes-textarea {
+	font-family: monospace;
+	resize: vertical;
+}
+
+/* Subseccións de aparencia */
+.postais-subsection-title {
+	margin: 1.5em 0 0.5em;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #e5e7eb;
+	font-size: 14px;
+	font-weight: 600;
+	color: #374151;
+}
+
+.postais-subsection-title:first-of-type {
+	margin-top: 0;
+}
+
+/* Inputs de cor */
+.form-table input[type="color"] {
+	width: 60px;
+	height: 36px;
+	padding: 2px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+.form-table td .description {
+	display: inline-block;
+	margin-left: 10px;
+	color: #666;
+	font-style: italic;
+}
+
+/* Stats Dashboard */
+.postais-stats-dashboard {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 20px;
+	margin: 20px 0;
+}
+
+.postais-stat-card {
+	background: #fff;
+	padding: 30px;
+	border: 1px solid #ccd0d4;
+	border-radius: 4px;
+	text-align: center;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	transition: all 0.3s;
+}
+
+.postais-stat-card:hover {
+	box-shadow: 0 4px 12px rgba(0,0,0,.1);
+	transform: translateY(-2px);
+}
+
+.postais-stat-number {
+	font-size: 48px;
+	font-weight: bold;
+	color: #0073aa;
+	line-height: 1;
+	margin-bottom: 10px;
+}
+
+.postais-stat-label {
+	font-size: 16px;
+	color: #666;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* Táboa de postais */
+.postais-table {
+	margin-top: 20px;
+}
+
+.postais-table .column-id {
+	width: 60px;
+}
+
+.postais-table .column-email {
+	width: 25%;
+}
+
+.postais-table .column-ip {
+	width: 15%;
+}
+
+.postais-table .column-date {
+	width: 20%;
+}
+
+.postais-table .column-thumbnail {
+	width: 120px;
+}
+
+.postais-table .column-cb {
+	width: 30px;
+	padding: 8px 10px;
+}
+
+.postais-table .column-actions {
+	width: 150px;
+}
+
+/* Botón de borrado */
+.button-link-delete {
+	color: #a00 !important;
+	border-color: #a00 !important;
+}
+
+.button-link-delete:hover {
+	color: #dc3232 !important;
+	border-color: #dc3232 !important;
+}
+
+/* Controis de táboa */
+.tablenav .bulkactions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.postais-thumbnail {
+	max-width: 100px;
+	height: auto;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	transition: all 0.3s;
+}
+
+.postais-thumbnail:hover {
+	transform: scale(1.05);
+	box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Lightbox */
+.postais-lightbox {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.postais-lightbox-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.9);
+}
+
+.postais-lightbox-content {
+	position: relative;
+	max-width: 90vw;
+	max-height: 90vh;
+	z-index: 2;
+}
+
+.postais-lightbox-close {
+	position: absolute;
+	top: -40px;
+	right: 0;
+	background: none;
+	border: none;
+	font-size: 40px;
+	color: #fff;
+	cursor: pointer;
+	padding: 0;
+	line-height: 1;
+}
+
+.postais-lightbox-close:hover {
+	color: #ddd;
+}
+
+.postais-lightbox-content img {
+	max-width: 100%;
+	max-height: 90vh;
+	display: block;
+	border: 2px solid #fff;
+	box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* Export page */
+.postais-export-box {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	border-radius: 4px;
+	max-width: 500px;
+	margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.postais-stats-dashboard {
+		grid-template-columns: 1fr;
+	}
+
+	.postais-image-grid {
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	}
+
+	.postais-table .column-ip,
+	.postais-table .column-thumbnail {
+		display: none;
+	}
+}
