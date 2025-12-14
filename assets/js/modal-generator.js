@@ -1446,9 +1446,9 @@
 
 						window.postalGeneratedUrl = data.data.url;
 
-						// Mostrar WhatsApp só en móbil
+						// Mostrar WhatsApp sempre
 						const whatsappBtn = document.getElementById('share-whatsapp-file');
-						if (whatsappBtn && isMobile()) {
+						if (whatsappBtn) {
 							whatsappBtn.style.display = 'flex';
 						}
 					} else {
@@ -1472,24 +1472,30 @@
 
 		const file = new File([state.generatedBlob], 'postal-nadal.jpg', { type: 'image/jpeg' });
 
+		// Comprobar se o navegador soporta compartir arquivos
 		if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
 			navigator.share({
 				files: [file],
 				title: 'Postal de Nadal',
 				text: 'Deséxoche bo Nadal! - crea a túa postal en aschavesdalingua.gal'
-			}).catch(() => {
-				shareWhatsAppUrl();
+			}).catch(function(err) {
+				// Se o usuario cancelou, non mostrar erro
+				if (err.name !== 'AbortError') {
+					showWhatsAppFallback();
+				}
 			});
 		} else {
-			shareWhatsAppUrl();
+			showWhatsAppFallback();
 		}
 	}
 
-	function shareWhatsAppUrl() {
-		const shareText = 'Deséxoche bo Nadal! - crea a túa postal en aschavesdalingua.gal';
-		const encodedUrl = encodeURIComponent(window.postalGeneratedUrl);
-		const encodedText = encodeURIComponent(shareText);
-		window.open(`https://wa.me/?text=${encodedText}%20${encodedUrl}`, '_blank');
+	function showWhatsAppFallback() {
+		alert('O teu navegador non permite compartir arquivos directamente.\n\nDescarga a imaxe primeiro e despois compártea en WhatsApp.');
+		// Activar descarga automática
+		const downloadBtn = document.getElementById('download-btn');
+		if (downloadBtn) {
+			downloadBtn.click();
+		}
 	}
 
 	function sendPostalByEmail() {
@@ -1543,10 +1549,6 @@
 			});
 		};
 		reader.readAsDataURL(state.generatedBlob);
-	}
-
-	function isMobile() {
-		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 	}
 
 	function validateEmail(email) {

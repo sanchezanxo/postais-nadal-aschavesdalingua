@@ -234,7 +234,7 @@ class Postais_Nadal_Database {
 		$count++;
 		set_transient( $transient_key, $count, 10 * MINUTE_IN_SECONDS );
 
-		// Límite: 5 postais cada 10 minutos
-		return $count > 5;
+		// Límite: 20 postais cada 10 minutos
+		return $count > 20;
 	}
 }

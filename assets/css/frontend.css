@@ -426,28 +426,31 @@
 .postal-btn:hover {
 	background: rgba(0, 0, 0, 0.03);
 	border-color: var(--text-light);
+	color: var(--text);
 }
 
 .postal-btn-primary {
 	background: var(--primary);
 	border-color: var(--primary);
-	color: white;
+	color: var(---bg) !important;
 }
 
 .postal-btn-primary:hover {
 	background: var(--primary-hover);
 	border-color: var(--primary-hover);
+	color: var(--text) !important;
 }
 
 .postal-btn-success {
 	background: var(--success);
 	border-color: var(--success);
-	color: white;
+	color: var(--bg) !important;
 }
 
 .postal-btn-success:hover {
 	background: #059669;
 	border-color: #059669;
+	color: var(--text) !important;
 }
 
 .postal-btn-sm {
@@ -558,10 +561,10 @@
 	justify-content: center;
 	gap: 0.5rem;
 	padding: 0.625rem 1rem;
-	background: var(--text);
-	border: none;
+	background: var(--bg-subtle);
+	border: 1px solid var(--border);
 	border-radius: 6px;
-	color: white;
+	color: var(--text) !important;
 	font-size: 0.8125rem;
 	font-weight: 500;
 	cursor: pointer;
@@ -576,30 +579,41 @@
 .postal-social-btn:hover {
 	transform: translateY(-1px);
 	box-shadow: var(--shadow);
+	color: var(--text) !important;
+	background: var(--bg);
 }
 
 .postal-social-btn-download {
-	background: var(--success);
+	border-color: var(--success);
 }
 
-.postal-social-btn-download:hover {
-	background: var(--success);
+.postal-social-btn-download i {
+	color: var(--text);
 }
 
 .postal-social-btn-whatsapp {
-	background: #25d366;
+	border-color: #25d366;
+	color: var(--bg) !important;
 }
 
-.postal-social-btn-whatsapp:hover {
-	background: #1ebe57;
+.postal-social-btn-whatsapp i {
+	color: var(--bg);
+}
+
+.postal-social-btn-whatsapp.postal-btn:hover {
+	color: #25d366;
+}
+
+.postal-social-btn-whatsapp:hover i {
+	color: #25d366;
 }
 
 .postal-social-btn-email {
-	background: var(--primary);
+	border-color: var(--primary);
 }
 
-.postal-social-btn-email:hover {
-	background: var(--primary-hover);
+.postal-social-btn-email i {
+	color: var(--primary);
 }
 
 /* Navegación */
