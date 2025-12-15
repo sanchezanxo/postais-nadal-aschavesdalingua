@@ -40,8 +40,7 @@
 		backgroundImage: null,
 		generatedBlob: null,
 		hintShown: false,
-		hoverOnResize: false,
-		userEmail: null
+		hoverOnResize: false
 	};
 
 	document.addEventListener('DOMContentLoaded', init);
@@ -54,6 +53,11 @@
 
 		const modal = document.getElementById('postal-modal');
 		if (!modal) return;
+
+		// Mover o modal a body para escapar dos estilos de Elementor/tema
+		if (modal.parentNode !== document.body) {
+			document.body.appendChild(modal);
+		}
 
 		const closeBtn = modal.querySelector('.postal-close');
 		const overlay = modal.querySelector('.postal-overlay');
@@ -116,7 +120,7 @@
 		}
 
 		document.getElementById('postal-share').style.display = 'none';
-		document.getElementById('postal-form').style.display = 'block';
+		document.getElementById('postal-generate-section').style.display = 'block';
 
 		const hint = document.querySelector('.postal-canvas-hint');
 		if (hint) hint.classList.remove('show');
@@ -1236,19 +1240,14 @@
 		state.previewCtx = state.previewCanvas.getContext('2d');
 
 		const backBtn = document.querySelector('.postal-back');
-		const form = document.getElementById('postal-form');
+		const generateBtn = document.getElementById('postal-generate-btn');
 		const whatsappBtn = document.getElementById('share-whatsapp-file');
-		const sendEmailBtn = document.getElementById('send-email-btn');
 
 		backBtn.addEventListener('click', () => goToStep(2));
-		form.addEventListener('submit', handleFormSubmit);
+		generateBtn.addEventListener('click', handleGenerate);
 
 		if (whatsappBtn) {
 			whatsappBtn.addEventListener('click', shareWhatsAppFile);
-		}
-
-		if (sendEmailBtn) {
-			sendEmailBtn.addEventListener('click', sendPostalByEmail);
 		}
 	}
 
@@ -1391,16 +1390,7 @@
 		fullResCanvas.toBlob(callback, 'image/jpeg', 0.92);
 	}
 
-	function handleFormSubmit(e) {
-		e.preventDefault();
-
-		const email = document.getElementById('postal-email').value;
-
-		if (!email || !validateEmail(email)) {
-			alert('Email non válido');
-			return;
-		}
-
+	function handleGenerate() {
 		document.querySelector('.postal-loading').style.display = 'flex';
 
 		// Xerar imaxe a resolución completa
@@ -1417,16 +1407,11 @@
 					textos: state.textElements
 				};
 
-				// Gardar email para uso posterior no botón de envío
-				state.userEmail = email;
-
 				const formData = new FormData();
 				formData.append('action', 'postais_generate_image');
 				formData.append('nonce', postaisNadal.nonce);
-				formData.append('email', email);
 				formData.append('image_data', base64data);
 				formData.append('metadata', JSON.stringify(metadata));
-				formData.append('send_email', '0');
 
 				fetch(postaisNadal.ajax_url, {
 					method: 'POST',
@@ -1437,7 +1422,7 @@
 					document.querySelector('.postal-loading').style.display = 'none';
 
 					if (data.success) {
-						document.getElementById('postal-form').style.display = 'none';
+						document.getElementById('postal-generate-section').style.display = 'none';
 						document.getElementById('postal-share').style.display = 'block';
 
 						const downloadBtn = document.getElementById('download-btn');
@@ -1496,63 +1481,6 @@
 		if (downloadBtn) {
 			downloadBtn.click();
 		}
-	}
-
-	function sendPostalByEmail() {
-		if (!state.generatedBlob) {
-			alert('Primeiro xera a postal');
-			return;
-		}
-
-		if (!state.userEmail) {
-			alert('Non se atopou o email');
-			return;
-		}
-
-		const sendBtn = document.getElementById('send-email-btn');
-		const originalText = sendBtn.innerHTML;
-		sendBtn.disabled = true;
-		sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-
-		const reader = new FileReader();
-		reader.onloadend = function() {
-			const base64data = reader.result;
-
-			const formData = new FormData();
-			formData.append('action', 'postais_send_email');
-			formData.append('nonce', postaisNadal.nonce);
-			formData.append('email', state.userEmail);
-			formData.append('image_data', base64data);
-
-			fetch(postaisNadal.ajax_url, {
-				method: 'POST',
-				body: formData
-			})
-			.then(response => response.json())
-			.then(data => {
-				sendBtn.disabled = false;
-
-				if (data.success) {
-					sendBtn.innerHTML = '<i class="fas fa-check"></i> Enviado!';
-					setTimeout(() => {
-						sendBtn.innerHTML = originalText;
-					}, 3000);
-				} else {
-					sendBtn.innerHTML = originalText;
-					alert('Erro: ' + (data.data.message || 'Non se puido enviar o email'));
-				}
-			})
-			.catch(() => {
-				sendBtn.disabled = false;
-				sendBtn.innerHTML = originalText;
-				alert('Erro ao enviar o email');
-			});
-		};
-		reader.readAsDataURL(state.generatedBlob);
-	}
-
-	function validateEmail(email) {
-		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 	}
 
 })();

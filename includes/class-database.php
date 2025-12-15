@@ -158,9 +158,6 @@ class Postais_Nadal_Database {
 		// Total de postais
 		$total = $wpdb->get_var( "SELECT COUNT(*) FROM {$this->table_name}" );
 
-		// Emails únicos
-		$unique_emails = $wpdb->get_var( "SELECT COUNT(DISTINCT email) FROM {$this->table_name}" );
-
 		// Postais de hoxe (usando a hora de WordPress)
 		$today = current_time( 'Y-m-d' );
 		$today_count = $wpdb->get_var(
@@ -182,7 +179,6 @@ class Postais_Nadal_Database {
 
 		return array(
 			'total' => (int) $total,
-			'unique_emails' => (int) $unique_emails,
 			'today' => (int) $today_count,
 			'last_week' => $last_week ? $last_week : array(),
 		);

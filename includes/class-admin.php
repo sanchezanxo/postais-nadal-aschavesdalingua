@@ -581,6 +581,8 @@ class Postais_Nadal_Admin {
 
 		// Estilo
 		$settings['radio_bordes'] = isset( $_POST['radio_bordes'] ) ? absint( $_POST['radio_bordes'] ) : 12;
+		$settings['tamanho_fonte_titulo'] = isset( $_POST['tamanho_fonte_titulo'] ) ? floatval( $_POST['tamanho_fonte_titulo'] ) : 1.25;
+		$settings['tamanho_fonte_botons'] = isset( $_POST['tamanho_fonte_botons'] ) ? floatval( $_POST['tamanho_fonte_botons'] ) : 0.875;
 
 		update_option( 'postais_nadal_settings', $settings );
 

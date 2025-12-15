@@ -32,7 +32,7 @@ $fontes = isset( $settings['fontes'] ) ? $settings['fontes'] : array();
 
 		<!-- Paso 1: Escoller formato e imaxe -->
 		<div class="postal-step postal-step-1 active">
-			<h2>Escolle a imaxe</h2>
+			<span class="postal-step-title">Escolle a imaxe</span>
 
 			<!-- Tabs de formato -->
 			<nav class="postal-format-selector" role="tablist">
@@ -92,7 +92,7 @@ $fontes = isset( $settings['fontes'] ) ? $settings['fontes'] : array();
 
 		<!-- Paso 2: Deseñar postal -->
 		<div class="postal-step postal-step-2">
-			<h2>Deseña a túa postal</h2>
+			<span class="postal-step-title">Deseña a túa postal</span>
 			<div class="postal-editor">
 				<div class="postal-canvas-wrapper">
 					<div class="postal-canvas-hint"><i class="fas fa-hand-pointer"></i> Toca para engadir texto</div>
@@ -175,22 +175,16 @@ $fontes = isset( $settings['fontes'] ) ? $settings['fontes'] : array();
 
 		<!-- Paso 3: Revisar e compartir -->
 		<div class="postal-step postal-step-3">
-			<h2>Comparte</h2>
+			<span class="postal-step-title">Comparte</span>
 			<div class="postal-editor">
 				<div class="postal-preview-wrapper">
 					<canvas id="postal-preview"></canvas>
 				</div>
 				<div class="postal-controls">
-					<div class="postal-control-section">
-						<form id="postal-form">
-							<div class="postal-control-group">
-								<label for="postal-email">O teu email</label>
-								<input type="email" name="email" id="postal-email" required placeholder="email@exemplo.com">
-							</div>
-							<button type="submit" class="postal-btn postal-btn-primary postal-btn-lg">
-								<i class="fas fa-check"></i> Xerar
-							</button>
-						</form>
+					<div class="postal-control-section" id="postal-generate-section">
+						<button type="button" id="postal-generate-btn" class="postal-btn postal-btn-primary postal-btn-lg">
+							<i class="fas fa-check"></i> Xerar postal
+						</button>
 					</div>
 					<div id="postal-share" style="display:none">
 						<div class="postal-success-message">
@@ -200,13 +194,13 @@ $fontes = isset( $settings['fontes'] ) ? $settings['fontes'] : array();
 							<a id="download-btn" download="postal-nadal.jpg" class="postal-social-btn postal-social-btn-download">
 								<i class="fas fa-download"></i> Descargar
 							</a>
-							<button type="button" id="send-email-btn" class="postal-social-btn postal-social-btn-email">
-								<i class="fas fa-envelope"></i> Enviar por email
-							</button>
-							<button type="button" id="share-whatsapp-file" class="postal-social-btn postal-social-btn-whatsapp" style="display:none">
+							<button type="button" id="share-whatsapp-file" class="postal-social-btn postal-social-btn-whatsapp">
 								<i class="fab fa-whatsapp"></i> WhatsApp
 							</button>
 						</div>
+						<p class="postal-share-hint">
+							<i class="fas fa-info-circle"></i> O envío por WhatsApp funciona mellor en móbil. En PC recomendamos descargar e compartir manualmente.
+						</p>
 					</div>
 				</div>
 			</div>

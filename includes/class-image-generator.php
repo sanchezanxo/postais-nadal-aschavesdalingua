@@ -19,17 +19,12 @@ class Postais_Nadal_Image_Generator {
 	 * Gardar imaxe da postal
 	 *
 	 * @param string $image_data Base64 encoded image data.
-	 * @param string $email Email do usuario.
+	 * @param string $email Email do usuario (opcional, pode estar baleiro).
 	 * @param string $ip IP do usuario.
 	 * @param array  $metadata Metadata da postal.
 	 * @return array|WP_Error Array con URL e ID ou WP_Error en caso de erro.
 	 */
 	public function save_image( $image_data, $email, $ip, $metadata ) {
-		// Validar email
-		if ( ! is_email( $email ) ) {
-			return new WP_Error( 'invalid_email', 'Email non válido' );
-		}
-
 		// Comprobar rate limit
 		$database = new Postais_Nadal_Database();
 		if ( $database->check_rate_limit( $ip ) ) {

@@ -29,11 +29,6 @@ $total = isset( $total ) ? $total : 0;
 		</div>
 
 		<div class="postais-stat-card">
-			<div class="postais-stat-number"><?php echo esc_html( $stats['unique_emails'] ); ?></div>
-			<div class="postais-stat-label">Usuarios Únicos</div>
-		</div>
-
-		<div class="postais-stat-card">
 			<div class="postais-stat-number"><?php echo esc_html( isset( $stats['today'] ) ? $stats['today'] : 0 ); ?></div>
 			<div class="postais-stat-label">Postais Hoxe</div>
 		</div>
@@ -96,7 +91,6 @@ $total = isset( $total ) ? $total : 0;
 							<input type="checkbox" id="postais-select-all">
 						</th>
 						<th class="column-id">ID</th>
-						<th class="column-email">Email</th>
 						<th class="column-ip">IP</th>
 						<th class="column-date">Data</th>
 						<th class="column-thumbnail">Miniatura</th>
@@ -110,7 +104,6 @@ $total = isset( $total ) ? $total : 0;
 								<input type="checkbox" class="postais-checkbox" value="<?php echo esc_attr( $postal['id'] ); ?>">
 							</td>
 							<td><?php echo esc_html( $postal['id'] ); ?></td>
-							<td><?php echo esc_html( $postal['email'] ); ?></td>
 							<td><?php echo esc_html( $postal['ip'] ); ?></td>
 							<td><?php echo esc_html( wp_date( 'd/m/Y H:i', strtotime( $postal['timestamp'] ) ) ); ?></td>
 							<td>

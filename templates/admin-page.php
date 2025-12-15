@@ -54,6 +54,10 @@ $cor_overlay = isset( $settings['cor_overlay'] ) ? $settings['cor_overlay'] : 'r
 // Radio dos bordes
 $radio_bordes = isset( $settings['radio_bordes'] ) ? $settings['radio_bordes'] : '12';
 
+// Tamaños de fonte
+$tamanho_fonte_titulo = isset( $settings['tamanho_fonte_titulo'] ) ? $settings['tamanho_fonte_titulo'] : '1.25';
+$tamanho_fonte_botons = isset( $settings['tamanho_fonte_botons'] ) ? $settings['tamanho_fonte_botons'] : '0.875';
+
 // Cores das tabs
 $cor_tab_activa = isset( $settings['cor_tab_activa'] ) ? $settings['cor_tab_activa'] : '#2563eb';
 $cor_tab_inactiva = isset( $settings['cor_tab_inactiva'] ) ? $settings['cor_tab_inactiva'] : '#6b7280';
@@ -355,6 +359,24 @@ $categorias = array(
 					<td>
 						<input type="number" id="radio_bordes" name="radio_bordes" value="<?php echo esc_attr( $radio_bordes ); ?>" min="0" max="24" class="small-text"> px
 						<span class="description">Redondeo das esquinas (0 = cadrado, 12 = suave)</span>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="tamanho_fonte_titulo">Tamaño Títulos</label>
+					</th>
+					<td>
+						<input type="number" id="tamanho_fonte_titulo" name="tamanho_fonte_titulo" value="<?php echo esc_attr( $tamanho_fonte_titulo ); ?>" min="0.75" max="3" step="0.125" class="small-text"> rem
+						<span class="description">Tamaño dos títulos dos pasos (1.25 por defecto)</span>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="tamanho_fonte_botons">Tamaño Botóns</label>
+					</th>
+					<td>
+						<input type="number" id="tamanho_fonte_botons" name="tamanho_fonte_botons" value="<?php echo esc_attr( $tamanho_fonte_botons ); ?>" min="0.5" max="2" step="0.125" class="small-text"> rem
+						<span class="description">Tamaño do texto dos botóns (0.875 por defecto)</span>
 					</td>
 				</tr>
 			</table>

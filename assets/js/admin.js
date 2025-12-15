@@ -348,7 +348,9 @@
 				cor_tab_inactiva: $('#cor_tab_inactiva').val(),
 				cor_tab_fondo_hover: $('#cor_tab_fondo_hover').val(),
 				// Estilo
-				radio_bordes: $('#radio_bordes').val()
+				radio_bordes: $('#radio_bordes').val(),
+				tamanho_fonte_titulo: $('#tamanho_fonte_titulo').val(),
+				tamanho_fonte_botons: $('#tamanho_fonte_botons').val()
 			};
 
 			$.ajax({
@@ -360,15 +362,17 @@
 				},
 				success: function(response) {
 					if (response.success) {
-						showNotice(response.data.message, 'success');
+						showNotice(response.data.message + ' Recargando...', 'success');
+						setTimeout(function() {
+							window.location.reload();
+						}, 1000);
 					} else {
 						showNotice(response.data.message, 'error');
+						saveBtn.prop('disabled', false).text('Gardar Cambios');
 					}
 				},
 				error: function() {
 					showNotice('Erro ao gardar a configuración', 'error');
-				},
-				complete: function() {
 					saveBtn.prop('disabled', false).text('Gardar Cambios');
 				}
 			});

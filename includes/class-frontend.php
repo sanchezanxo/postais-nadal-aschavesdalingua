@@ -24,8 +24,6 @@ class Postais_Nadal_Frontend {
 		add_action( 'wp_footer', array( $this, 'render_modal' ) );
 		add_action( 'wp_ajax_postais_generate_image', array( $this, 'handle_generate_image' ) );
 		add_action( 'wp_ajax_nopriv_postais_generate_image', array( $this, 'handle_generate_image' ) );
-		add_action( 'wp_ajax_postais_send_email', array( $this, 'handle_send_email' ) );
-		add_action( 'wp_ajax_nopriv_postais_send_email', array( $this, 'handle_send_email' ) );
 	}
 
 	/**
@@ -253,6 +251,8 @@ class Postais_Nadal_Frontend {
 			'cor_tab_activa'            => '#2563eb',
 			'cor_tab_inactiva'          => '#6b7280',
 			'cor_tab_fondo_hover'       => '#f3f4f6',
+			'tamanho_fonte_titulo'      => '1.25',
+			'tamanho_fonte_botons'      => '0.875',
 		);
 
 		// Merge con valores gardados
@@ -266,63 +266,71 @@ class Postais_Nadal_Frontend {
 		$cor_whatsapp_hover = $this->darken_color( $vars['cor_whatsapp'], 10 );
 		$cor_perigo_hover = $this->darken_color( $vars['cor_perigo'], 15 );
 
-		// Xerar CSS
+		// Xerar CSS con prefixo postal- e selector #postal-modal para alta especificidade
 		$css = ":root {
-	--primary: {$vars['cor_primaria']};
-	--primary-hover: {$vars['cor_primaria_hover']};
-	--text: {$vars['modal_cor_texto']};
-	--text-light: {$vars['modal_cor_texto_secundario']};
-	--border: {$vars['cor_borde']};
-	--bg: {$vars['modal_cor_fondo']};
-	--bg-subtle: {$vars['cor_fondo_sutil']};
-	--success: {$vars['cor_exito']};
-	--danger: {$vars['cor_perigo']};
-	--radius: {$vars['radio_bordes']}px;
+	--postal-primary: {$vars['cor_primaria']};
+	--postal-primary-hover: {$vars['cor_primaria_hover']};
+	--postal-text: {$vars['modal_cor_texto']};
+	--postal-text-light: {$vars['modal_cor_texto_secundario']};
+	--postal-border: {$vars['cor_borde']};
+	--postal-bg: {$vars['modal_cor_fondo']};
+	--postal-bg-subtle: {$vars['cor_fondo_sutil']};
+	--postal-success: {$vars['cor_exito']};
+	--postal-danger: {$vars['cor_perigo']};
+	--postal-radius: {$vars['radio_bordes']}px;
 }
 
 /* Cores personalizadas para botóns */
-.postal-social-btn-download {
-	background: {$vars['cor_descarga']};
+#postal-modal .postal-social-btn-download {
+	border-color: {$vars['cor_descarga']};
 }
-.postal-social-btn-download:hover {
-	background: {$cor_descarga_hover};
-}
-
-.postal-social-btn-whatsapp {
-	background: {$vars['cor_whatsapp']};
-}
-.postal-social-btn-whatsapp:hover {
-	background: {$cor_whatsapp_hover};
+#postal-modal .postal-social-btn-download i {
+	color: {$vars['cor_descarga']};
 }
 
-.postal-delete-link {
+#postal-modal .postal-social-btn-whatsapp {
+	border-color: {$vars['cor_whatsapp']};
+}
+#postal-modal .postal-social-btn-whatsapp i {
+	color: {$vars['cor_whatsapp']};
+}
+
+#postal-modal .postal-delete-link {
 	color: {$vars['cor_perigo']};
 }
-.postal-delete-link:hover {
+#postal-modal .postal-delete-link:hover {
 	color: {$cor_perigo_hover};
 }
 
 /* Mensaxe de éxito */
-.postal-success-message {
+#postal-modal .postal-success-message {
 	background: {$this->hex_to_rgba( $vars['cor_exito'], 0.15 )};
 	border-color: {$this->hex_to_rgba( $vars['cor_exito'], 0.4 )};
 	color: {$this->darken_color( $vars['cor_exito'], 40 )};
 }
 
 /* Tabs de formato */
-.postal-format-btn {
+#postal-modal .postal-format-btn {
 	color: {$vars['cor_tab_inactiva']};
 }
-.postal-format-btn:hover {
+#postal-modal .postal-format-btn:hover {
 	color: {$vars['cor_tab_activa']};
 	background: {$vars['cor_tab_fondo_hover']};
 }
-.postal-format-btn.active {
+#postal-modal .postal-format-btn.active {
 	color: {$vars['cor_tab_activa']};
 	border-bottom-color: {$vars['cor_tab_activa']};
 }
-.postal-format-btn.active:hover {
+#postal-modal .postal-format-btn.active:hover {
 	color: {$vars['cor_tab_activa']};
+}
+
+/* Tamaños de fonte personalizados */
+#postal-modal .postal-step-title {
+	font-size: {$vars['tamanho_fonte_titulo']}rem;
+}
+#postal-modal .postal-btn {
+	font-size: {$vars['tamanho_fonte_botons']}rem;
 }";
 
 		return $css;
@@ -386,14 +394,8 @@ class Postais_Nadal_Frontend {
 		check_ajax_referer( 'postais_nadal_frontend', 'nonce' );
 
 		// Obter datos
-		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
 		$image_data = isset( $_POST['image_data'] ) ? $this->sanitize_base64_image( $_POST['image_data'] ) : '';
 		$metadata = isset( $_POST['metadata'] ) ? json_decode( stripslashes( $_POST['metadata'] ), true ) : array();
-
-		// Validar email
-		if ( ! is_email( $email ) ) {
-			wp_send_json_error( array( 'message' => 'Email non válido' ) );
-		}
 
 		// Validar imaxe
 		if ( empty( $image_data ) ) {
@@ -405,84 +407,13 @@ class Postais_Nadal_Frontend {
 
 		// Xerar e gardar imaxe
 		$image_generator = new Postais_Nadal_Image_Generator();
-		$result = $image_generator->save_image( $image_data, $email, $ip, $metadata );
+		$result = $image_generator->save_image( $image_data, '', $ip, $metadata );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
-		// Enviar por email se o usuario o solicitou
-		$send_email = isset( $_POST['send_email'] ) && '1' === $_POST['send_email'];
-		if ( $send_email && ! empty( $result['url'] ) ) {
-			$this->send_postal_email( $email, $result['url'] );
-		}
-
 		wp_send_json_success( $result );
-	}
-
-	/**
-	 * Manexar envío de email via AJAX (botón separado)
-	 */
-	public function handle_send_email() {
-		// Verificar nonce
-		check_ajax_referer( 'postais_nadal_frontend', 'nonce' );
-
-		// Obter datos
-		$email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$image_data = isset( $_POST['image_data'] ) ? $this->sanitize_base64_image( $_POST['image_data'] ) : '';
-
-		// Validar email
-		if ( ! is_email( $email ) ) {
-			wp_send_json_error( array( 'message' => 'Email non válido' ) );
-		}
-
-		// Validar imaxe
-		if ( empty( $image_data ) ) {
-			wp_send_json_error( array( 'message' => 'Imaxe non válida ou demasiado grande' ) );
-		}
-
-		// Crear arquivo temporal da imaxe
-		$upload_dir = wp_upload_dir();
-		$temp_file = $upload_dir['basedir'] . '/postais-nadal/temp-email-' . uniqid() . '.jpg';
-
-		// Asegurar que existe o directorio
-		$dir = dirname( $temp_file );
-		if ( ! file_exists( $dir ) ) {
-			wp_mkdir_p( $dir );
-		}
-
-		// Decodificar e gardar imaxe temporal
-		$image_data = str_replace( 'data:image/jpeg;base64,', '', $image_data );
-		$image_data = str_replace( ' ', '+', $image_data );
-		$decoded = base64_decode( $image_data );
-
-		if ( false === $decoded ) {
-			wp_send_json_error( array( 'message' => 'Erro ao procesar a imaxe' ) );
-		}
-
-		// Gardar arquivo temporal
-		$saved = file_put_contents( $temp_file, $decoded );
-		if ( false === $saved ) {
-			wp_send_json_error( array( 'message' => 'Erro ao gardar a imaxe' ) );
-		}
-
-		// Enviar email
-		$to = $email;
-		$subject = __( 'A túa postal de Nadal - As Chaves da Lingua', 'postais-nadal' );
-		$message = __( "Ola!\n\nAquí tes a túa postal de Nadal.\n\nBoas festas!\n\nAs Chaves da Lingua\nhttps://aschavesdalingua.gal", 'postais-nadal' );
-		$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
-		$attachments = array( $temp_file );
-
-		$sent = wp_mail( $to, $subject, $message, $headers, $attachments );
-
-		// Eliminar arquivo temporal
-		@unlink( $temp_file );
-
-		if ( ! $sent ) {
-			wp_send_json_error( array( 'message' => 'Erro ao enviar o email' ) );
-		}
-
-		wp_send_json_success( array( 'message' => 'Email enviado correctamente' ) );
 	}
 
 	/**
@@ -502,35 +433,6 @@ class Postais_Nadal_Frontend {
 		}
 
 		return $ip;
-	}
-
-	/**
-	 * Enviar postal por email co JPG adxunto
-	 *
-	 * @param string $email Email do destinatario.
-	 * @param string $image_url URL da imaxe.
-	 */
-	private function send_postal_email( $email, $image_url ) {
-		// Converter URL a path local
-		$upload_dir = wp_upload_dir();
-		$image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $image_url );
-
-		if ( ! file_exists( $image_path ) ) {
-			error_log( 'Postais Nadal: Non se atopou a imaxe para enviar: ' . $image_path );
-			return;
-		}
-
-		$to = $email;
-		$subject = __( 'A túa postal de Nadal - As Chaves da Lingua', 'postais-nadal' );
-		$message = __( "Ola!\n\nAquí tes a túa postal de Nadal.\n\nBoas festas!\n\nAs Chaves da Lingua\nhttps://aschavesdalingua.gal", 'postais-nadal' );
-		$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
-		$attachments = array( $image_path );
-
-		$sent = wp_mail( $to, $subject, $message, $headers, $attachments );
-
-		if ( ! $sent ) {
-			error_log( 'Postais Nadal: Erro ao enviar email a ' . $email );
-		}
 	}
 
 	/**
