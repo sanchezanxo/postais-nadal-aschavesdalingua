@@ -1043,19 +1043,16 @@
 		font-size: 0.8125rem;
 	}
 
-	/* Botóns sociais en grid */
+	/* Botóns sociais en columna (todos ao 100%) */
 	#postal-modal .postal-share-buttons {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
+		display: flex;
+		flex-direction: column;
 		gap: 0.5rem;
-	}
-
-	#postal-modal .postal-share-buttons .postal-social-btn:first-child {
-		grid-column: 1 / -1;
 	}
 
 	#postal-modal .postal-social-btn {
 		padding: 0.625rem;
 		font-size: 0.8125rem;
+		width: 100%;
 	}
 }
